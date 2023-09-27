@@ -1,6 +1,7 @@
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { getConfig } from '../utils/config';
 
-const { LOGGER_CONFIG, JWT_CONFIG, REDIS_CONFIG } = getConfig();
+const { LOGGER_CONFIG, JWT_CONFIG, REDIS_CONFIG, MYSQL_CONFIG } = getConfig();
 
 export const getConfiguration = () => ({
   logger: {
@@ -20,6 +21,14 @@ export const getConfiguration = () => ({
     password: REDIS_CONFIG.auth,
     db: REDIS_CONFIG.db,
   },
+  database: {
+    type: MYSQL_CONFIG.type,
+    ...MYSQL_CONFIG,
+    entities: [__dirname + '/../**/entities/*.entity.{ts,js}'],
+    synchronize: true,
+    logging: ['error'],
+    timezone: '+08:00', // 东八区
+  } as MysqlConnectionOptions
 });
 
 export type ConfigurationType = ReturnType<typeof getConfiguration>;
