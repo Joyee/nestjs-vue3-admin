@@ -5,12 +5,16 @@ import { UserController } from './user/user.controller';
 import { MenuService } from './menu/menu.service';
 import { DepartmentService } from './department/department.service';
 import { DepartmentController } from './department/department.controller';
+import { RoleService } from './role/role.service';
 import SysUser from '@/entities/admin/sys-user.entity';
 import SysRole from '@/entities/admin/sys-role.entity';
 import SysUserRole from '@/entities/admin/sys-user-role.entity';
 import SysMenu from '@/entities/admin/sys-menu.entity';
 import SysDepartment from '@/entities/admin/sys-department.entity';
 import SysRoleDepartment from '@/entities/admin/sys-role-department.entity';
+import SysRoleMenu from '@/entities/admin/sys-role-menu.entity';
+import { rootRoleIdProvider } from '../core/provider/root-role-id.provider';
+import { RoleController } from './role/role.controller';
 
 @Module({
   imports: [
@@ -21,10 +25,17 @@ import SysRoleDepartment from '@/entities/admin/sys-role-department.entity';
       SysMenu,
       SysDepartment,
       SysRoleDepartment,
-      SysRoleDepartment,
+      SysRoleMenu,
     ]),
   ],
-  providers: [SysUserService, MenuService, DepartmentService],
-  controllers: [UserController, DepartmentController],
+  providers: [
+    rootRoleIdProvider(),
+    SysUserService,
+    MenuService,
+    DepartmentService,
+    RoleService,
+  ],
+  controllers: [UserController, DepartmentController, RoleController],
+  exports: [SysUserService],
 })
 export class SystemModule {}

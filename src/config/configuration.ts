@@ -1,9 +1,10 @@
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { getConfig } from '../utils/config';
 
-const { LOGGER_CONFIG, JWT_CONFIG, REDIS_CONFIG, MYSQL_CONFIG } = getConfig();
+const { LOGGER_CONFIG, JWT_CONFIG, REDIS_CONFIG, MYSQL_CONFIG, ROOT_ROLE_ID } = getConfig();
 
 export const getConfiguration = () => ({
+  rootRoleId: ROOT_ROLE_ID || 1,
   logger: {
     timestamp: false,
     dir: LOGGER_CONFIG.dir,

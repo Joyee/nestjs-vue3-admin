@@ -19,7 +19,7 @@ export class SysUserService {
 
   /**
    * 添加用户
-   * @param dto 
+   * @param dto
    */
   async add(dto: CreateUserDto): Promise<void> {
     const user = await this.userRepository.findOne({
@@ -54,6 +54,12 @@ export class SysUserService {
         userId: result.id,
       }));
       await this.entityManager.insert(SysUserRole, insertRoles);
+    });
+  }
+
+  async findUserByUserName(username: string): Promise<SysUser | undefined> {
+    return await this.userRepository.findOne({
+      where: { username },
     });
   }
 }

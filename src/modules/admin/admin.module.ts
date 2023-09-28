@@ -4,6 +4,7 @@ import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { LoginModule } from './login/login.module';
 import { SystemModule } from './system/system.module';
+import { ADMIN_PREFIX } from './admin.constants';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { SystemModule } from './system/system.module';
         path: 'admin',
         children: [{ path: 'system', module: SystemModule }],
       },
+      { path: ADMIN_PREFIX, module: LoginModule },
     ]),
     LoginModule,
     SystemModule,

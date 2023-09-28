@@ -11,8 +11,6 @@ export class UserController {
   @ApiOperation({ summary: '添加系统用户' })
   @Post('add')
   async add(@Body() dto: CreateUserDto): Promise<void> {
-    try {
-      await this.userService.add(dto);
-    } catch (error) {}
+    await this.userService.add(dto);
   }
 }

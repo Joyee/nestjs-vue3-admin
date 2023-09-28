@@ -44,3 +44,6 @@ JWT_CONFIG:
 WS_CONFIG:
   port: 7002
   path: '/ws-api'
+
+# 角色配置
+ROOT_ROLE_ID: 1
