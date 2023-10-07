@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@nestjs/axios':
     specifier: ^3.0.0
-    version: 3.0.0(@nestjs/common@10.2.5)(axios@1.5.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+    version: 3.0.0(@nestjs/common@10.2.5)(axios@1.5.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
   '@nestjs/cache-manager':
     specifier: ^2.1.0
     version: 2.1.0(@nestjs/common@10.2.5)(@nestjs/core@10.2.5)(cache-manager@5.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -35,6 +35,9 @@ dependencies:
   '@nestjs/typeorm':
     specifier: ^10.0.0
     version: 10.0.0(@nestjs/common@10.2.5)(@nestjs/core@10.2.5)(reflect-metadata@0.1.13)(rxjs@7.8.1)(typeorm@0.3.17)
+  axios:
+    specifier: ^1.5.1
+    version: 1.5.1
   cache-manager:
     specifier: ^5.2.3
     version: 5.2.3
@@ -86,6 +89,9 @@ dependencies:
   typeorm:
     specifier: ^0.3.17
     version: 0.3.17(ioredis@5.3.2)(mysql2@3.6.1)(ts-node@10.9.1)
+  ua-parser-js:
+    specifier: ^1.0.36
+    version: 1.0.36
   winston:
     specifier: ^3.10.0
     version: 3.10.0
@@ -133,6 +139,9 @@ devDependencies:
   '@types/supertest':
     specifier: ^2.0.12
     version: 2.0.12
+  '@types/ua-parser-js':
+    specifier: ^0.7.37
+    version: 0.7.37
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.59.11
     version: 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.49.0)(typescript@5.2.2)
@@ -1047,7 +1056,7 @@ packages:
     resolution: {integrity: sha512-Xs/4RZltsAL7pkvaNStUQt7netTkyxrS0K+RILcVr3TRMS/ToOg4I6uNfhB9SlGsnWBym4U+EaXq0f0cEMNkHA==}
     engines: {node: '>=8'}
 
-  /@nestjs/axios@3.0.0(@nestjs/common@10.2.5)(axios@1.5.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+  /@nestjs/axios@3.0.0(@nestjs/common@10.2.5)(axios@1.5.1)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-ULdH03jDWkS5dy9X69XbUVbhC+0pVnrRcj7bIK/ytTZ76w7CgvTZDJqsIyisg3kNOiljRW/4NIjSf3j6YGvl+g==}
     peerDependencies:
       '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -1056,7 +1065,7 @@ packages:
       rxjs: ^6.0.0 || ^7.0.0
     dependencies:
       '@nestjs/common': 10.2.5(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      axios: 1.5.0
+      axios: 1.5.1
       reflect-metadata: 0.1.13
       rxjs: 7.8.1
     dev: false
@@ -1684,6 +1693,10 @@ packages:
     resolution: {integrity: sha512-6tOUG+nVHn0cJbVp25JFayS5UE6+xlbcNF9Lo9mU7U0zk3zeUShZied4YEQZjy1JBF043FSkdXw8YkUJuVtB5g==}
     dev: false
 
+  /@types/ua-parser-js@0.7.37:
+    resolution: {integrity: sha512-4sOxS3ZWXC0uHJLYcWAaLMxTvjRX3hT96eF4YWUh1ovTaenvibaZOE5uXtIp4mksKMLRwo7YDiCBCw6vBiUPVg==}
+    dev: true
+
   /@types/validator@13.11.1:
     resolution: {integrity: sha512-d/MUkJYdOeKycmm75Arql4M5+UuXmf4cHdHKsyw1GcvnNgL6s77UkgSgJ8TE/rI5PYsnwYq5jkcWBLuN/MpQ1A==}
 
@@ -2137,8 +2150,8 @@ packages:
       - supports-color
     dev: false
 
-  /axios@1.5.0:
-    resolution: {integrity: sha512-D4DdjDo5CY50Qms0qGQTTw6Q44jl7zRwY7bthds06pUGfChBCTcQs+N743eFWGEd6pRTMd6A+I87aWyFV5wiZQ==}
+  /axios@1.5.1:
+    resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}
     dependencies:
       follow-redirects: 1.15.3
       form-data: 4.0.0
@@ -6025,6 +6038,10 @@ packages:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  /ua-parser-js@1.0.36:
+    resolution: {integrity: sha512-znuyCIXzl8ciS3+y3fHJI/2OhQIXbXw9MWC/o3qwyR+RGppjZHrM27CGFSKCJXi2Kctiz537iOu2KnXs1lMQhw==}
+    dev: false
 
   /uid@2.0.2:
     resolution: {integrity: sha512-u3xV3X7uzvi5b1MncmZo3i2Aw222Zk1keqLA1YkHldREkAhAqi65wuPfe7lHx8H/Wzy+8CE7S7uS3jekIM5s8g==}

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_GUARD } from '@nestjs/core'
 import { AdminModule } from './modules/admin/admin.module';
 import { LoggerModule } from './common/logger/logger.module';
 import { SharedModule } from './shared/shared.module';
@@ -14,6 +15,7 @@ import {
 } from './common/logger/logger.interface';
 import { LOGGER_MODULE_OPTIONS } from './common/logger/logger.constants';
 import { TypeORMLoggerService } from './common/logger/typeorm-logger.service';
+import { AuthGuard } from './modules/admin/core/guards/auth.guard'
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -73,6 +75,11 @@ import { TypeORMLoggerService } from './common/logger/typeorm-logger.service';
     AdminModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    }
+  ],
 })
 export class AppModule {}

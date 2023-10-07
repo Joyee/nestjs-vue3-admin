@@ -15,6 +15,9 @@ import SysRoleDepartment from '@/entities/admin/sys-role-department.entity';
 import SysRoleMenu from '@/entities/admin/sys-role-menu.entity';
 import { rootRoleIdProvider } from '../core/provider/root-role-id.provider';
 import { RoleController } from './role/role.controller';
+import { LogService } from './log/log.service';
+import { LogController } from './log/log.controller';
+import LoginLog from '@/entities/admin/sys-login-log.entity';
 
 @Module({
   imports: [
@@ -26,6 +29,7 @@ import { RoleController } from './role/role.controller';
       SysDepartment,
       SysRoleDepartment,
       SysRoleMenu,
+      LoginLog,
     ]),
   ],
   providers: [
@@ -34,8 +38,14 @@ import { RoleController } from './role/role.controller';
     MenuService,
     DepartmentService,
     RoleService,
+    LogService,
   ],
-  controllers: [UserController, DepartmentController, RoleController],
-  exports: [SysUserService],
+  controllers: [
+    UserController,
+    DepartmentController,
+    RoleController,
+    LogController,
+  ],
+  exports: [SysUserService, LogService],
 })
 export class SystemModule {}

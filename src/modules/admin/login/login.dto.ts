@@ -43,9 +43,3 @@ export class LoginInfoDto {
   @MaxLength(4)
   verifyCode: string;
 }
-
-export class DecryptDto {
-  @ApiProperty({ description: '要解密的内容' })
-  @IsString()
-  data: string;
-}

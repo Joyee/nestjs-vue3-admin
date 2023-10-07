@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Query, Body } from '@nestjs/common';
+import { FastifyRequest } from 'fastify';
+import {
+  Controller,
+  Get,
+  Post,
+  Query,
+  Body,
+  Req,
+  Headers,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { LoginService } from './login.service';
-import { ImageCaptchaDto, LoginInfoDto, DecryptDto } from './login.dto';
+import { ImageCaptchaDto, LoginInfoDto } from './login.dto';
 import { ImageCaptcha, LoginToken } from './login.interface';
 import { UtilService } from '@/shared/services/util.service';
 
@@ -21,13 +30,19 @@ export class LoginController {
 
   @ApiOperation({ summary: '登录' })
   @Post('login')
-  async login(@Body() dto: LoginInfoDto): Promise<LoginToken> {
+  async login(
+    @Body() dto: LoginInfoDto,
+    @Req() req: FastifyRequest,
+    @Headers('user-agent') ua: string,
+  ): Promise<LoginToken> {
     // 先校验验证码
     await this.loginService.checkImgCaptcha(dto.captchaId, dto.verifyCode);
     const token = await this.loginService.getLoginSign(
       dto.username,
       dto.password,
+      this.utilService.getReqIP(req),
+      ua,
     );
-    return { token: '' };
+    return { token };
   }
 }
