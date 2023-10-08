@@ -1,12 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not, IsNull } from 'typeorm';
-import { includes, isEmpty } from 'lodash';
+import { includes, isEmpty, concat, uniq } from 'lodash';
 import SysMenu from '@/entities/admin/sys-menu.entity';
 import { RoleService } from '../role/role.service';
 import { ROOT_ROLE_ID } from '../../admin.constants';
-import { concat } from 'lodash';
-import { uniq } from 'lodash';
+import { CreateMenuDto, UpdateMenuDto } from './menu.dto';
 @Injectable()
 export class MenuService {
   constructor(
@@ -77,4 +76,24 @@ export class MenuService {
 
     return perms;
   }
+
+  /**
+   * 新增菜单
+   * @param params
+   */
+  async add(params: CreateMenuDto): Promise<void> {
+    await this.menuRepository.insert(params);
+    // TODO 通知用户更新权限菜单
+  }
+
+  /**
+   * 更新菜单
+   * @param params
+   */
+  async update(params: UpdateMenuDto): Promise<void> {
+    await this.menuRepository.save(params);
+    // TODO 通知用户更新权限菜单
+  }
+
+  async delete() {}
 }

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import {
   ApiOperation,
   ApiSecurity,
@@ -10,6 +10,7 @@ import { ADMIN_PREFIX } from '../../admin.constants';
 import SysMenu from '@/entities/admin/sys-menu.entity';
 import { AdminUser } from '../../core/decorators/admin-user.decorator';
 import { IAdminUser } from '../../admin.interface';
+import { CreateMenuDto } from './menu.dto';
 
 @ApiSecurity(ADMIN_PREFIX)
 @ApiTags('菜单权限模块')
@@ -22,5 +23,11 @@ export class MenuController {
   @Get('list')
   async list(@AdminUser() user: IAdminUser): Promise<SysMenu[]> {
     return await this.menuService.getMenus(user.uid);
+  }
+
+  @ApiOperation({ summary: '新增菜单' })
+  @Post('add')
+  async add(@Body() dto: CreateMenuDto): Promise<void> {
+    await this.menuService.add(dto);
   }
 }

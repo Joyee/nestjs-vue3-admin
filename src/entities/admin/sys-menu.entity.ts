@@ -65,6 +65,6 @@ export default class SysMenu extends BaseEntity {
   isExt: boolean;
 
   @ApiProperty({ description: '外链打开方式' })
-  @Column({ name: 'open_mode', nullable: true, default: '' })
-  openMode: string;
+  @Column({ name: 'open_mode', nullable: true, default: 1 })
+  openMode: number;
 }
