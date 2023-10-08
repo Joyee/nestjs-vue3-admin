@@ -6,7 +6,7 @@ import SysDepartment from '@/entities/admin/sys-department.entity';
 import { DeptDetailInfo } from './department.interface';
 
 @ApiTags('部门模块')
-@Controller('department')
+@Controller('dept')
 export class DepartmentController {
   constructor(private deptService: DepartmentService) {}
 

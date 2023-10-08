@@ -13,6 +13,7 @@ import { LoginService } from './login.service';
 import { ImageCaptchaDto, LoginInfoDto } from './login.dto';
 import { ImageCaptcha, LoginToken } from './login.interface';
 import { UtilService } from '@/shared/services/util.service';
+import { Public } from '../core/decorators/authorize.decorator';
 
 @ApiTags('登录模块')
 @Controller()
@@ -23,12 +24,14 @@ export class LoginController {
   ) {}
 
   @ApiOperation({ summary: '获取登录图片验证码' })
+  @Public()
   @Get('captcha/img')
   async getCaptchaByImg(@Query() dto: ImageCaptchaDto): Promise<ImageCaptcha> {
     return await this.loginService.createImageCaptcha(dto);
   }
 
   @ApiOperation({ summary: '登录' })
+  @Public()
   @Post('login')
   async login(
     @Body() dto: LoginInfoDto,

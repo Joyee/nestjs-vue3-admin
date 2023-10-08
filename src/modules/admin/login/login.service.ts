@@ -1,3 +1,4 @@
+import { MenuService } from './../system/menu/menu.service';
 import { SysUserService } from './../system/user/user.service';
 import { Injectable } from '@nestjs/common';
 import * as svgCaptcha from 'svg-captcha';
@@ -8,6 +9,7 @@ import { UtilService } from '@/shared/services/util.service';
 import { RedisService } from '@/shared/redis/redis.service';
 import { BusinessException } from '@/common/exceptions/business.exception';
 import { LogService } from '../system/log/log.service';
+import { PermissionMenuInfo } from './login.interface';
 
 @Injectable()
 export class LoginService {
@@ -17,6 +19,7 @@ export class LoginService {
     private userService: SysUserService,
     private jwtService: JwtService,
     private logService: LogService,
+    private menuService: MenuService,
   ) {}
 
   /**
@@ -77,32 +80,45 @@ export class LoginService {
     ip: string,
     ua: string,
   ): Promise<string> {
-    try {
-      // 先查询库里是否有该用户
-      const user = await this.userService.findUserByUserName(username);
-      if (isEmpty(user)) {
-        throw new BusinessException(10003);
-      }
-      // 检查密码是否正确
-      const comparePassword = this.utilService.md5(`${password}${user.psalt}`);
-      if (user.password !== comparePassword) {
-        throw new BusinessException(10003);
-      }
-
-      const jwtSign = this.jwtService.sign({
-        uid: parseInt(user.id.toString()),
-        pv: 1,
-      });
-      // 设置token过期时间为24h
-      await this.redisService
-        .getRedis()
-        .set(`admin:token:${user.id}`, jwtSign, 'EX', 60 * 60 * 24);
-      // 保存登录日志
-      await this.logService.saveLoginLog(user.id, ip, ua);
-      return jwtSign;
-    } catch (error) {
-      console.log('出错了', error);
-      throw new Error(error);
+    // 先查询库里是否有该用户
+    const user = await this.userService.findUserByUserName(username);
+    if (isEmpty(user)) {
+      throw new BusinessException(10003);
     }
+    // 检查密码是否正确
+    const comparePassword = this.utilService.md5(`${password}${user.psalt}`);
+    if (user.password !== comparePassword) {
+      throw new BusinessException(10003);
+    }
+    const perms = await this.menuService.getPermissions(user.id);
+
+    const jwtSign = this.jwtService.sign({
+      uid: parseInt(user.id.toString()),
+      pv: 1,
+    });
+    // 设置token过期时间为24h
+    await this.redisService
+      .getRedis()
+      .set(`admin:token:${user.id}`, jwtSign, 'EX', 60 * 60 * 24);
+    await this.redisService
+      .getRedis()
+      .set(`admin:perms:${user.id}`, JSON.stringify(perms));
+    // 保存登录日志
+    await this.logService.saveLoginLog(user.id, ip, ua);
+    return jwtSign;
+  }
+
+  /**
+   * 获取当前用户的权限菜单
+   * @param uid
+   */
+  async getPermissionMenu(uid: number): Promise<PermissionMenuInfo> {
+    const menus = await this.menuService.getMenus(uid);
+    const perms = await this.menuService.getPermissions(uid);
+    return { menus, perms: perms };
+  }
+
+  async getRedisPermsById(uid: number): Promise<string> {
+    return this.redisService.getRedis().get(`admin:perms:${uid}`);
   }
 }

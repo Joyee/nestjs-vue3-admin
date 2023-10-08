@@ -8,6 +8,8 @@ import SysRoleDepartment from '@/entities/admin/sys-role-department.entity';
 import { CreateRoleId, RoleInfo } from './role.interface';
 import SysRole from '@/entities/admin/sys-role.entity';
 import { ROOT_ROLE_ID } from '../../admin.constants';
+import SysUserRole from '@/entities/admin/sys-user-role.entity';
+import { map } from 'lodash';
 
 @Injectable()
 export class RoleService {
@@ -19,6 +21,8 @@ export class RoleService {
     private roleDeptRepository: Repository<SysRoleDepartment>,
     @InjectEntityManager() private entityManager: EntityManager,
     @Inject(ROOT_ROLE_ID) private rootRoleId: number,
+    @InjectRepository(SysUserRole)
+    private userRoleRepository: Repository<SysUserRole>,
   ) {}
 
   /**
@@ -162,6 +166,33 @@ export class RoleService {
       order: { id: 'DESC' },
       take: dto.limit, // 指定查询结果的数量（分页，设置每一页返回多少）
       skip: (dto.page - 1) * dto.limit, // 指定查询结果的起始位置
+    });
+  }
+
+  /**
+   * 根据用户id查找角色id集合
+   * @param uid
+   */
+  async getRoleIdByUser(uid: number): Promise<number[]> {
+    const result = await this.userRoleRepository.find({
+      where: { userId: uid },
+    });
+    if (!isEmpty(result)) {
+      return map(result, (n) => n.roleId);
+    }
+    return [];
+  }
+
+  /**
+   * 根据角色ID列表查找关联用户ID
+   * @param roleIds
+   */
+  async countUserIdByRole(roleIds: number[]): Promise<number | never> {
+    if (includes(roleIds, this.rootRoleId)) {
+      throw new Error('不能删除超级管理员');
+    }
+    return await this.userRoleRepository.count({
+      where: { roleId: In(roleIds) },
     });
   }
 }

@@ -7,6 +7,7 @@ import { BusinessException } from '@/common/exceptions/business.exception';
 import { UtilService } from '@/shared/services/util.service';
 import SysUser from '@/entities/admin/sys-user.entity';
 import SysUserRole from '@/entities/admin/sys-user-role.entity';
+import { AccountInfo } from './user.class';
 
 @Injectable()
 export class SysUserService {
@@ -61,5 +62,27 @@ export class SysUserService {
     return await this.userRepository.findOne({
       where: { username },
     });
+  }
+
+  /**
+   * 获取用户信息
+   * @param uid 
+   * @param ip 
+   */
+  async getAccountInfo(uid: number, ip?: string): Promise<AccountInfo> {
+    const user = await this.userRepository.findOne({ where: { id: uid } });
+    if (isEmpty(user)) {
+      throw new BusinessException(10017);
+    }
+
+    return {
+      name: user.name,
+      nickName: user.nickName,
+      email: user.email,
+      phone: user.phone,
+      remark: user.remark,
+      headImg: user.headImg,
+      loginIp: ip,
+    };
   }
 }

@@ -7,6 +7,7 @@ import {
   IsArray,
   IsInt,
   Min,
+  ArrayNotEmpty,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { PageOptionsDto } from '@/common/dto/page.dto';
@@ -68,4 +69,11 @@ export class PageSearchRoleDto extends PageOptionsDto {
   @IsString()
   @IsOptional()
   remark: string = '';
+}
+
+export class DeleteRoleDto {
+  @ApiProperty({ description: '需要删除的角色id列表', type: [Number] })
+  @IsArray()
+  @ArrayNotEmpty()
+  roleIds: number[];
 }
